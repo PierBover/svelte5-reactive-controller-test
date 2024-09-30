@@ -1,18 +1,23 @@
 <script>
-	import {Controller, counter} from './controller.svelte';
+	import SwitchController from './SwitchController.svelte';
+	import {createSwitchableController} from './controller.svelte';
 
-	const controller = new Controller();
+	const first = createSwitchableController('first');
+	const second = createSwitchableController('second');
 
-	function onclick () {
-		controller.add();
+	let switcher;
+
+	function setController (controller) {
+		switcher.setController(controller);
 	}
+
+	$effect(() => {
+		setController(first);
+	});
 
 </script>
 
-<h1>Test</h1>
+<button onclick={() => setController(first)}>First</button>
+<button onclick={() => setController(second)}>Second</button>
 
-<h2>{controller.currentTime}</h2>
-
-<h3>{controller.count} {counter.count}</h3>
-
-<button {onclick}>Moar count</button>
+<SwitchController bind:this={switcher}></SwitchController>
